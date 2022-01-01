@@ -1,7 +1,7 @@
-import { Comment, List } from "antd"
+import { Avatar, Card, Comment, List, Space, } from "antd"
 import useProcessComment from './use-process-comment'
 interface IProps {
-  list: ICommentList["list"];
+  data: IViewData;
 }
 
 const CommentComponent = (props: { list: any }) => {
@@ -32,12 +32,17 @@ const CommentComponent = (props: { list: any }) => {
   );
 };
 function CommentList(props: IProps) {
-  const { list } = props;
+  const { data } = props;
+  const { wx_avatar, nick_name, content, commentList, created_at, } = data
   const { processComment, } = useProcessComment()
-  const data = processComment([], list, null);
+  const list = processComment([], commentList.list, null);
   return (
     <>
-      <CommentComponent list={data} />
+      <Card>
+        <Space><Avatar src={wx_avatar} />{nick_name}{created_at}</Space>
+        <div dangerouslySetInnerHTML={{__html: content ? content.replace(/\n/g, '<br />') : '' }}></div>
+      </Card>
+      <CommentComponent list={list} />
     </>
   );
 }

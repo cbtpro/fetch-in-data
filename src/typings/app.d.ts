@@ -104,6 +104,7 @@ interface ICommentList {
     app_id: string;
     community_id: string;
     user_id: string;
+    wx_avatar: string;
     nick_name: string;
     content: string;
     commentList: ICommentList;

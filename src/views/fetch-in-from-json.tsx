@@ -68,10 +68,10 @@ function FetchInFromJSON() {
   );
 
   const [visible, setVisible] = useState(false);
-  const [comments, setComments] = useState<ICommentList>()
+  const [current, setCurrent] = useState<IViewData>()
 
-  const showDrawer = (commentList: ICommentList) => {
-    setComments(commentList)
+  const showDrawer = (record: IViewData) => {
+    setCurrent(record)
     setVisible(true);
   };
   const onClose = () => {
@@ -129,14 +129,14 @@ function FetchInFromJSON() {
       key: "url",
       width: "320px",
       render: (text: any, record: any, index: number) => {
-        const { id, community_id, commentList, } = record;
+        const { id, community_id, commentList, content, } = record;
         const { list, total_count } = commentList || {}
         const url = `https://appoxpkjya89223.h5.xiaoeknow.com/feedDetail?feedId=${id}&communityId=${community_id}`;
         return (
           <Space size="middle">
             {
               total_count > 0 ?
-              <Button type="link" onClick={() => showDrawer(commentList)}>
+              <Button type="link" onClick={() => showDrawer(record)}>
                 查看{total_count}条评论（非实时）
               </Button> : ''
             }
@@ -167,14 +167,13 @@ function FetchInFromJSON() {
       />
       ;
       <Drawer
-        title="详情"
         placement="right"
         closable={false}
         onClose={onClose}
         visible={visible}
         width="400px"
       >
-        { comments ? <CommentList list={comments.list} /> : '' }
+        { current ? <CommentList data={current} /> : '' }
       </Drawer>
     </>
   );
