@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Drawer, Space, Table } from "antd";
-import Comment from '../components/Comment'
+import { Avatar, Button, Drawer, Space, Table } from "antd";
+import CommentList from '../components/CommentList'
 import defaultData from "../assets/data/default.json";
 
 function FetchInFromJSON() {
@@ -11,6 +11,7 @@ function FetchInFromJSON() {
       app_id,
       community_id,
       user_id,
+      wx_avatar,
       nick_name,
       content,
       commentList,
@@ -22,6 +23,7 @@ function FetchInFromJSON() {
       app_id,
       community_id,
       user_id,
+      wx_avatar,
       nick_name,
       content: text,
       commentList,
@@ -85,6 +87,17 @@ function FetchInFromJSON() {
       onFilter: (value: any, record: IViewData) => {
         return record.nick_name.indexOf(value) === 0;
       },
+      render: (text: any, record: any, index: number) => {
+        const { wx_avatar, } = record
+        return (
+          <>
+            <Space>
+              <Avatar src={wx_avatar} alt={text} />
+              {text}
+            </Space>
+          </>
+        )
+      },
     },
     {
       title: "内容",
@@ -120,7 +133,7 @@ function FetchInFromJSON() {
               </Button> : ''
             }
             <a href={url} target="_blank" rel="noopener noreferrer">
-              去评论（新开页面）
+              去评论
             </a>
           </Space>
         );
@@ -144,7 +157,7 @@ function FetchInFromJSON() {
         visible={visible}
         width="400px"
       >
-        { comments ? <Comment list={comments.list} /> : '' }
+        { comments ? <CommentList list={comments.list} /> : '' }
       </Drawer>
     </>
   );
