@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Avatar, Button, Drawer, Space, Table } from "antd";
+import { Avatar, Button, Drawer, Form, Space, Switch, Table } from "antd";
 import CommentList from '../components/CommentList'
 import defaultData from "../assets/data/default.json";
 
 function FetchInFromJSON() {
   const { data } = defaultData as unknown as IRawData;
-  const dataSource: IViewData[] = data.map((item) => {
+  const [filterHasComment, setFilterHasComment] = useState(false)
+  const rawDataSource: IViewData[] = [...data].map((item) => {
     const {
       id,
       app_id,
@@ -29,7 +30,13 @@ function FetchInFromJSON() {
       commentList,
       created_at,
     };
-  });
+  })
+  let dataSource = [...rawDataSource].filter(d => {
+    if (filterHasComment) {
+      return d.commentList.list.length > 0
+    }
+    return true
+  })
   const distinct: <T>(array: T[], ...rest: string[]) => T[] = (
     array,
     ...rest
@@ -77,6 +84,7 @@ function FetchInFromJSON() {
       dataIndex: "nick_name",
       key: "nick_name",
       width: "200px",
+      filterSearch: true,
       filters: nickNames.map((item) => {
         const { user_id, nick_name } = item;
         return {
@@ -140,8 +148,17 @@ function FetchInFromJSON() {
       },
     },
   ];
+  const onFilterChange = (filter: boolean) => {
+    setFilterHasComment(filter)
+  }
+
   return (
     <>
+      <Form>
+        <Form.Item label="只看有评论的" valuePropName="checked">
+          <Switch onChange={onFilterChange} />
+        </Form.Item>
+      </Form>
       <Table
         dataSource={dataSource}
         columns={columns}
