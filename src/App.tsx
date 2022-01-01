@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { HashRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./views/home";
 import FetchInFromJSON from "./views/fetch-in-from-json";
 
@@ -8,7 +8,7 @@ import "./App.css";
 function App() {
   const home = <Home />
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div>
         <nav>
           <ul>
@@ -25,7 +25,7 @@ function App() {
         <Route path="/" element={home} />
         <Route path="/fetch-in-json" element={<FetchInFromJSON />}></Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
