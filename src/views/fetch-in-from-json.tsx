@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, } from "react";
 import { Avatar, Button, Drawer, Form, Space, Switch, Table } from "antd";
 import CommentList from '../components/CommentList'
 import defaultData from "../assets/data/default.json";
@@ -86,7 +86,7 @@ function FetchInFromJSON() {
       width: "200px",
       filterSearch: true,
       filters: nickNames.map((item) => {
-        const { user_id, nick_name } = item;
+        const { nick_name } = item;
         return {
           text: nick_name,
           value: nick_name,
@@ -129,8 +129,8 @@ function FetchInFromJSON() {
       key: "url",
       width: "320px",
       render: (text: any, record: any, index: number) => {
-        const { id, community_id, commentList, content, } = record;
-        const { list, total_count } = commentList || {}
+        const { id, community_id, commentList, } = record;
+        const { total_count } = commentList || {}
         const url = `https://appoxpkjya89223.h5.xiaoeknow.com/feedDetail?feedId=${id}&communityId=${community_id}`;
         return (
           <Space size="middle">
