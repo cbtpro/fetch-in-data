@@ -1,10 +1,12 @@
 import { useState, } from "react";
-import { Avatar, Button, Drawer, Form, Space, Switch, Table } from "antd";
+import { Avatar, Button, Drawer, Form, Space, Switch, Table } from 'antd'
 import CommentList from '../components/CommentList'
-import defaultData from "../assets/data/default.json";
+import defaultData from '../assets/data/default.json'
+import groupData from '../assets/data/group.json'
 
 function FetchInFromJSON() {
   const { data } = defaultData as unknown as IRawData;
+  const groups = groupData as any[];
   const [filterHasComment, setFilterHasComment] = useState(false)
   const rawDataSource: IViewData[] = [...data].map((item) => {
     const {
@@ -18,6 +20,11 @@ function FetchInFromJSON() {
       commentList,
       created_at,
     } = item;
+    const groupInfo = groups.find(g => g.userId === user_id)
+    const {
+      group,
+      company,
+    } = groupInfo || {}
     const { text } = content;
     return {
       id,
@@ -29,6 +36,8 @@ function FetchInFromJSON() {
       content: text,
       commentList,
       created_at,
+      group,
+      company,
     };
   })
   let dataSource = [...rawDataSource].filter(d => {
@@ -105,6 +114,101 @@ function FetchInFromJSON() {
             </Space>
           </>
         )
+      },
+    },
+    {
+      title: "分组",
+      dataIndex: "group",
+      key: "group",
+      width: "80px",
+      filters: [
+        {
+          text: '未知',
+          value: '',
+        },
+        {
+          text: '1组',
+          value: '1组',
+        },
+        {
+          text: '2组',
+          value: '2组',
+        },
+        {
+          text: '3组',
+          value: '3组',
+        },
+        {
+          text: '4组',
+          value: '4组',
+        },
+        {
+          text: '5组',
+          value: '5组',
+        },
+        {
+          text: '6组',
+          value: '6组',
+        },
+        {
+          text: '7组',
+          value: '7组',
+        },
+        {
+          text: '8组',
+          value: '8组',
+        },
+        {
+          text: '9组',
+          value: '9组',
+        },
+        {
+          text: '10组',
+          value: '10组',
+        },
+        {
+          text: '11组',
+          value: '11组',
+        },
+        {
+          text: '12组',
+          value: '12组',
+        },
+        {
+          text: '13组',
+          value: '13组',
+        },
+        {
+          text: '14组',
+          value: '14组',
+        },
+        {
+          text: '15组',
+          value: '15组',
+        },
+        {
+          text: '16组',
+          value: '16组',
+        },
+        {
+          text: '17组',
+          value: '17组',
+        },
+        {
+          text: '18组',
+          value: '18组',
+        },
+        {
+          text: '19组',
+          value: '19组',
+        },
+        {
+          text: '20组',
+          value: '20组',
+        },
+      ],
+      onFilter: (value: any, record: IViewData) => {
+        return record.group === value;
       },
     },
     {

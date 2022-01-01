@@ -109,5 +109,7 @@ interface ICommentList {
     content: string;
     commentList: ICommentList;
     created_at: string;
+    company: string;
+    group: string;
   }
   
