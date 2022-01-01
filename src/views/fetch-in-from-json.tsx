@@ -1,4 +1,5 @@
-import defaultData from "../assets/data/default.json";
+import { Space, Table, } from 'antd'
+import defaultData from "../assets/data/default.json"
 
 interface IItem {
   id: string;
@@ -100,26 +101,103 @@ interface IRawData {
 }
 
 interface IViewData {
+  id: string;
   app_id: string;
   community_id: string;
+  user_id: string;
   nick_name: string;
   content: string;
   created_at: string;
 }
 function FetchInFromJSON() {
   const { feeds_num, data } = defaultData as unknown as IRawData;
-  const json: IViewData[] = data.map((item) => {
-    const { app_id, community_id, nick_name, content, created_at } = item;
+  const dataSource: IViewData[] = data.map((item) => {
+    const { id, app_id, community_id, user_id, nick_name, content, created_at } = item;
     const { text } = content;
     return {
+      id,
       app_id,
       community_id,
+      user_id,
       nick_name,
       content: text,
       created_at,
     };
   });
-  return <h1>{JSON.stringify(json, null, 2)}</h1>;
+  const distinct: <T>(array: T[], ...rest: string[]) => T[] = (array, ...rest) => {
+    const results: any[] = []
+    array.map((item: any) => {
+      const index = results.findIndex(element => {
+        return rest.every((r: any) => element[r] === item[r])
+      })
+      if (index === -1) {
+        results.push(item)
+      }
+    })
+    return results
+  }
+  const nickNames = distinct(dataSource.map(item => {
+    const { user_id, nick_name, } = item
+    return {
+      user_id,
+      nick_name,
+    }
+  }).sort((a, b) => {
+    return a.nick_name.localeCompare(b.nick_name)
+  }), 'user_id')
+  const columns = [
+    {
+      title: '昵称',
+      dataIndex: 'nick_name',
+      key: 'nick_name',
+      width: '200px',
+      filters: nickNames.map(item => {
+        const { user_id, nick_name, } = item
+        return {
+          text: nick_name,
+          value: nick_name,
+        }
+      }),
+      onFilter: (value: any, record: IViewData) => {
+        return record.nick_name.indexOf(value) === 0
+      },
+    },
+    {
+      title: '内容',
+      dataIndex: 'content',
+      key: 'content',
+    },
+    {
+      title: '发布时间',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      sorter: (a: IViewData, b: IViewData) => {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      },
+      width: '200px',
+    },
+    {
+      title: '详情',
+      dataIndex: 'url',
+      key: 'url',
+      width: '100px',
+      render: (text: any, record: any, index: number) => {
+        const { id, community_id, } = record
+        const url = `https://appoxpkjya89223.h5.xiaoeknow.com/feedDetail?feedId=${id}&communityId=${community_id}`
+        return (
+          <Space size="middle">
+            <a href={url} target="_blank" rel="noreferrer">去评论</a>
+          </Space>
+        )
+      }
+    },
+  ]
+  return <Table
+    dataSource={dataSource}
+    columns={columns}
+    rowKey="id"
+    size="small"
+  />;
 }
 
 export default FetchInFromJSON;
