@@ -4,6 +4,8 @@ import CommentList from '../components/CommentList'
 import defaultData from '../assets/data/default.json'
 import groupData from '../assets/data/group.json'
 
+const UNKNOWN = '未知'
+
 function FetchInFromJSON() {
   const { data } = defaultData as unknown as IRawData;
   const groups = groupData as any[];
@@ -22,7 +24,7 @@ function FetchInFromJSON() {
     } = item;
     const groupInfo = groups.find(g => g.userId === user_id)
     const {
-      group,
+      group = UNKNOWN,
       company,
     } = groupInfo || {}
     const { text } = content;
@@ -123,8 +125,8 @@ function FetchInFromJSON() {
       width: "80px",
       filters: [
         {
-          text: '未知',
-          value: '',
+          text: UNKNOWN,
+          value: UNKNOWN,
         },
         {
           text: '1组',
