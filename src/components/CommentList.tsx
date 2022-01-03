@@ -1,5 +1,5 @@
 import { Avatar, Card, Comment, List, Space, } from 'antd'
-import ReactJson from 'react-json-view'
+// import ReactJson from 'react-json-view'
 import CommentNode from './CommentNode'
 import useProcessComment from './use-process-comment'
 interface IProps {
@@ -33,13 +33,48 @@ const CommentComponent = (props: { list: any }) => {
     </>
   );
 };
+const CommentNodeComponent = (props: { list: CommentNode[] }) => {
+  const { list, } = props
+  const data = [...list]
+  return (
+    <>
+      {
+        <List
+          header={`${data.length} 条评论`}
+          itemLayout="horizontal"
+          dataSource={data}
+          renderItem={(item) => {
+            const { nick_name, reply_nick_name, } = item
+            const author = <><Space>{nick_name} 回复 {reply_nick_name}</Space></>
+            return (
+              <li>
+                <Comment
+                  author={author}
+                  avatar={item.wx_avatar}
+                  content={item.comment}
+                  datetime={item.created_at}
+                >
+                  { item.children ? <CommentNodeComponent list={item.children} /> : '' }
+                </Comment>
+              </li>
+            )}
+          }
+        />
+      }
+    </>
+  );
+}
 function CommentList(props: IProps) {
   const { data } = props;
   const { wx_avatar, nick_name, content, commentList, created_at, } = data
-  const { processComment, translateCommentNode, processCommentNode, } = useProcessComment()
-  const list = processComment([], commentList.list, null);
-  // const commentNodes: CommentNode[] = translateCommentNode(commentList.list)
-  // const list = processCommentNode([], [...commentNodes])
+  const {
+    // processComment,
+    translateCommentNode,
+    processCommentNode,
+  } = useProcessComment()
+  // const list = processComment([], commentList.list, null);
+  const commentNodes: CommentNode[] = translateCommentNode(commentList.list)
+  const list = processCommentNode([], [...commentNodes])
   return (
     <>
       <Card>
@@ -47,7 +82,8 @@ function CommentList(props: IProps) {
         <div dangerouslySetInnerHTML={{__html: content ? content.replace(/\n/g, '<br />') : '' }}></div>
       </Card>
       {/* <ReactJson src={list} /> */}
-      <CommentComponent list={list} />
+      <CommentNodeComponent list={list} />
+      {/* <CommentComponent list={list} /> */}
     </>
   );
 }

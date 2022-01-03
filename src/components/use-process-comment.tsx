@@ -1,5 +1,12 @@
 import CommentNode from "./CommentNode";
 
+/**
+ * 递归方式处理多级别评论（支持无限层）
+ * @param result 
+ * @param comments 
+ * @param id 
+ * @returns 
+ */
 function processComment(result: any, comments: any, id: string | null) {
   if (!Array.isArray(comments)) {
     return result;
@@ -48,49 +55,50 @@ const translateCommentNode: (comments: IComment[]) => CommentNode[] = (
   });
 };
 
+/**
+ * 处理多层评论，仅显示两层
+ * @param result 
+ * @param commentNodes 
+ * @param parentCommentId 
+ * @param parentUserId 
+ * @returns 
+ */
 const processCommentNode: (
   result: CommentNode[],
   commentNodes: CommentNode[],
   parentCommentId?: number | undefined | null,
   parentUserId?: string,
 ) => CommentNode[] = (result, commentNodes, parentCommentId, parentUserId) => {
-  const rootCommentIds: number[] = []
+  const needRemoveCommentIds: number[] = []
   if (parentCommentId || parentUserId) {
     // 处理评论的评论
     commentNodes.forEach(commentNode => {
-      const parentCommentNode = result.find((r) => r.id === parentCommentId)
-      if (parentCommentNode) {
-        console.log(parentCommentId, parentUserId)
-        if (parentCommentNode.children) {
-          parentCommentNode.children.push(commentNode)
-        } else {
-          parentCommentNode.children = [commentNode]
+        if (parentCommentId === commentNode.reply_comment_id || parentCommentId === commentNode.main_comment_id) {
+          result.push(commentNode)
+          needRemoveCommentIds.push(commentNode.id as number)
         }
-      }
     })
   } else {
     commentNodes.forEach((commentNode, i) => {
       // 处理根根评论
       const isRootNode = commentNode.isRootNode();
-      const isRootNodeReply = commentNode.isRootNodeReply()
       if (isRootNode) {
         result.push(commentNode);
-        rootCommentIds.push(commentNode.id as number)
-      } else if (isRootNodeReply) {
-        
+        needRemoveCommentIds.push(commentNode.id as number)
       }
     });
   }
 
-  const leftCommentNodes = commentNodes.filter(item => rootCommentIds.indexOf(item.id as number) === -1)
-  result.forEach((commentNode, i) => {
-    const { id, user_id, } = commentNode
-    const children = processCommentNode([], [...leftCommentNodes], id, user_id)
-    if (children && children.length > 0) {
-      commentNode.children = children
-    }
-  })
-  console.log(commentNodes)
+  const leftCommentNodes = commentNodes.filter(item => needRemoveCommentIds.indexOf(item.id as number) === -1)
+  if (leftCommentNodes.length > 0) {
+    result.forEach((commentNode, i) => {
+      const { id, user_id, } = commentNode
+      const children = processCommentNode([], [...leftCommentNodes], id, user_id)
+      if (children && children.length > 0) {
+        commentNode.children = children
+      }
+    })
+  }
   return result;
 };
 function useProcessComment() {
