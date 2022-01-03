@@ -257,9 +257,11 @@ function FetchInFromJSON() {
   const onFilterChange = (filter: boolean) => {
     setFilterHasComment(filter)
   }
-
+  const [commentList] = [rawDataSource.map(r => r.commentList.list).flat()]
+  const showTotal = (total: number) => `共 ${total} 条`
   return (
     <>
+      共{rawDataSource.length}条记录，{commentList.length}条评论。
       <Form>
         <Form.Item label="只看有评论的" valuePropName="checked">
           <Switch onChange={onFilterChange} />
@@ -268,6 +270,7 @@ function FetchInFromJSON() {
       <Table
         dataSource={dataSource}
         columns={columns}
+        pagination={{ position: ['topRight', 'bottomRight'], showQuickJumper: true, showTotal, }}
         rowKey="id"
         size="small"
       />
