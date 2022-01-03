@@ -1,38 +1,40 @@
 
+interface IComment {
+  [x: string]: any;
+  id: number;
+  app_id: string;
+  community_id: string;
+  feeds_id: string;
+  user_id: string;
+  comment: string;
+  comment_resource: {
+    image: any[];
+    audio: any[];
+  }[];
+  type: number;
+  main_comment_id?: string;
+  reply_user_id: string;
+  reply_comment_id?: string;
+  send_type: number;
+  created_at: string;
+  praise_cnt: number;
+  nick_name: string;
+  wx_avatar: string;
+  user_type: number;
+  is_guest: number;
+  reply_nick_name: string;
+  reply_wx_avatar: string;
+  reply_user_type: number;
+  reply_is_guest: number;
+  zan_num: number;
+  show_time: string;
+  work_corp_id: string;
+  work_user_id: string;
+  reply_work_corp_id: string;
+  reply_work_user_id: string;
+}
 interface ICommentList {
-    list: {
-      id: number;
-      app_id: string;
-      community_id: string;
-      feeds_id: string;
-      user_id: string;
-      comment: string;
-      comment_resource: {
-        image: any[];
-        audio: any[];
-      }[];
-      type: number;
-      main_comment_id?: string;
-      reply_user_id: string;
-      reply_comment_id?: string;
-      send_type: number;
-      created_at: string;
-      praise_cnt: number;
-      nick_name: string;
-      wx_avatar: string;
-      user_type: number;
-      is_guest: number;
-      reply_nick_name: string;
-      reply_wx_avatar: string;
-      reply_user_type: number;
-      reply_is_guest: number;
-      zan_num: number;
-      show_time: string;
-      work_corp_id: string;
-      work_user_id: string;
-      reply_work_corp_id: string;
-      reply_work_user_id: string;
-    }[];
+    list: IComment[];
     total_count: number;
   }
   interface IItem {
