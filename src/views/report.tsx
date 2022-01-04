@@ -4,7 +4,7 @@ import {
   BarChart,
   // 系列类型的定义后缀都为 SeriesOption
   BarSeriesOption,
-  LineChart,
+  // LineChart,
   LineSeriesOption
 } from 'echarts/charts';
 import {
@@ -55,7 +55,7 @@ function Report() {
       width: 1920,
       height: 600,
     });
-    myChart.setOption({
+    const option: ECOption = {
       xAxis: {
         type: 'category',
         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -69,7 +69,8 @@ function Report() {
           type: 'bar'
         }
       ]
-    });
+    }
+    myChart.setOption(option);
   }
   const disposeECharts = () => {
     if (myChart) {
