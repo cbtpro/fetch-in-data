@@ -115,3 +115,24 @@ interface ICommentList {
     group: string;
   }
   
+  interface IUser {
+    user_id: string;
+    nick_name: string;
+    group: string;
+    company: string;
+  }
+  interface IFilterForm {
+    dateRange: Moment[];
+    users: IUser[];
+    groups: string[],
+    companys: string[],
+    nickNames: string[],
+  }
+
+  interface ISummary {
+    userId: string;
+    nickName: string;
+    postCount: number;
+    commentCount: number;
+    replyComout: number;
+  }

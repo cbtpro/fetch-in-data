@@ -1,48 +1,13 @@
 import { useState, } from "react";
 import { Avatar, Button, Drawer, Form, Space, Switch, Table } from 'antd'
+import useData, { UNKNOWN, } from '../hooks/use-data'
 import CommentList from '../components/CommentList'
-// 数据来源 https://appoxpkjya89223.h5.xiaoeknow.com/small_community/h5_get_feeds_list?app_id=appOXpkJya89223&community_id=c_61b1b23123ff0_YNOK5LTp2458&feeds_list_type=-1&order_filed=created_at&hide_exercise=0&page=1&page_size=200000
-import defaultData from '../assets/data/default.json'
-import groupData from '../assets/data/group.json'
-
-const UNKNOWN = '未知'
 
 function FetchInFromJSON() {
-  const { data } = defaultData as unknown as IRawData;
-  const groups = groupData as any[];
   const [filterHasComment, setFilterHasComment] = useState(false)
-  const rawDataSource: IViewData[] = [...data].map((item) => {
-    const {
-      id,
-      app_id,
-      community_id,
-      user_id,
-      wx_avatar,
-      nick_name,
-      content,
-      commentList,
-      created_at,
-    } = item;
-    const groupInfo = groups.find(g => g.userId === user_id)
-    const {
-      group = UNKNOWN,
-      company,
-    } = groupInfo || {}
-    const { text } = content;
-    return {
-      id,
-      app_id,
-      community_id,
-      user_id,
-      wx_avatar,
-      nick_name,
-      content: text,
-      commentList,
-      created_at,
-      group,
-      company,
-    };
-  })
+  
+  const { getDataSource, } = useData()
+  const rawDataSource = getDataSource()
   let dataSource = [...rawDataSource].filter(d => {
     if (filterHasComment) {
       return d.commentList.list.length > 0
@@ -275,7 +240,6 @@ function FetchInFromJSON() {
         rowKey="id"
         size="small"
       />
-      ;
       <Drawer
         placement="right"
         closable={false}

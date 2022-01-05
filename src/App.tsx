@@ -18,9 +18,9 @@ function App() {
             <li>
               <Link to="/fetch-in-json">从JSON中获取数据</Link>
             </li>
-            {/* <li>
+            <li>
               <Link to="/report">报表</Link>
-            </li> */}
+            </li>
           </ul>
         </nav>
       </div>
