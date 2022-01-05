@@ -70,13 +70,13 @@ function Summary (props: IProps) {
     },
     {
       title: "主动评论数",
-      dataIndex: "commentCount",
-      key: "commentCount",
+      dataIndex: "replyComout",
+      key: "replyComout",
     },
     {
       title: "被动评论数",
-      dataIndex: "replyComout",
-      key: "replyComout",
+      dataIndex: "commentCount",
+      key: "commentCount",
     },
   ];
   const showTotal = (total: number) => `共 ${total} 条`
