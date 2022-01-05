@@ -22,7 +22,7 @@ const useData = () => {
         created_at,
       } = item;
       const groupInfo = groups.find((g) => g.userId === user_id);
-      const { group = UNKNOWN, company } = groupInfo || {};
+      const { group = UNKNOWN, company, name, } = groupInfo || {};
       const { text } = content;
       return {
         id,
@@ -31,6 +31,7 @@ const useData = () => {
         user_id,
         wx_avatar,
         nick_name,
+        name,
         content: text,
         commentList,
         created_at,

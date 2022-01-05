@@ -108,6 +108,7 @@ interface ICommentList {
     user_id: string;
     wx_avatar: string;
     nick_name: string;
+    name: string;
     content: string;
     commentList: ICommentList;
     created_at: string;
@@ -132,6 +133,7 @@ interface ICommentList {
   interface ISummary {
     userId: string;
     nickName: string;
+    name: string;
     postCount: number;
     commentCount: number;
     replyComout: number;

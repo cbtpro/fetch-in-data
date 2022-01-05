@@ -25,7 +25,7 @@ function Summary (props: IProps) {
     return item.commentList.list
   }).flat()
   data.forEach(item => {
-    const { user_id, nick_name, commentList, } = item
+    const { user_id, nick_name, name, commentList, } = item
     const newCommentCount = commentList.list.filter(item => item.user_id !== user_id).length
     const userReport = reports.find(report => report.userId === user_id)
     if (userReport) {
@@ -36,6 +36,7 @@ function Summary (props: IProps) {
       reports.push({
         userId: user_id,
         nickName: nick_name,
+        name,
         postCount: 1,
         commentCount: newCommentCount,
         replyComout: 0,
@@ -56,6 +57,11 @@ function Summary (props: IProps) {
       title: "昵称",
       dataIndex: "nickName",
       key: "nickName",
+    },
+    {
+      title: "姓名",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "三好一改",
