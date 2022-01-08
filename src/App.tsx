@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./views/home";
 import FetchInFromJSON from "./views/fetch-in-from-json";
 import Report from "./views/report";
+import UpdateData from "./views/update-data";
 
 import "./App.css";
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/fetch-in-json" element={<FetchInFromJSON />} />
         <Route path="/report" element={<Report />}></Route>
+        <Route path="/update-data" element={<UpdateData />}></Route>
       </Routes>
     </HashRouter>
   );

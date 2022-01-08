@@ -13,3 +13,4 @@
 // limitations under the License.
 
 export * from './user'
+export * from './db'
