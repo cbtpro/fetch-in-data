@@ -1,4 +1,4 @@
-import React, { useState, } from 'react'
+import React, { useEffect, useState, } from 'react'
 import moment from 'moment'
 // import * as echarts from 'echarts/core';
 // import {
@@ -89,36 +89,52 @@ function Report() {
   //     console.log('这里应该销毁报表组件')
   //   }
   // })
-  
-  const { getDataSource, } = useData()
-  const rawDataSource = getDataSource()
+  const [rawDataSource, setRawDataSource] = useState<IViewData[]>()
   // 接下来的使用就跟之前一样，初始化图表，设置配置项
-  const users = distinct(
-    rawDataSource
-      .map((item) => {
-        const { user_id, nick_name, group, company, } = item;
-        return {
-          user_id,
-          nick_name,
-          group,
-          company,
-        };
-      })
-      .sort((a, b) => {
-        return a.nick_name.localeCompare(b.nick_name);
-      }),
-    "user_id"
-  );
   const [filterForm, setFilterForm] = useState<IFilterForm>({
     dateRange: [
-      moment().set({hour:0,minute:0,second:0,millisecond:0}).add('day', -1),
+      moment().set({hour:0,minute:0,second:0,millisecond:0}).add(-1, 'day'),
       moment().set({hour:0,minute:0,second:0,millisecond:0})
     ],
-    users: [...users],
+    users: [],
     groups: [],
     companys: [],
     nickNames: [],
   })
+  const { getDataSource, } = useData()
+  useEffect(() => {
+    const initData = async () => {
+      try {
+        const data = await getDataSource()
+        setRawDataSource(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    initData()
+  }, [])
+  useEffect(() => {
+    const users = distinct(
+      (rawDataSource || [])
+        .map((item) => {
+          const { user_id, nick_name, group, company, } = item;
+          return {
+            user_id,
+            nick_name,
+            group,
+            company,
+          };
+        })
+        .sort((a, b) => {
+          return a.nick_name.localeCompare(b.nick_name);
+        }),
+      "user_id"
+    );
+    setFilterForm({
+      ...filterForm,
+      users: [...users],
+    })
+  }, [rawDataSource])
   const onSubmit = (form: IFilterForm) => {
     const { dateRange, groups, companys, nickNames, } = form
     setFilterForm({
@@ -129,7 +145,7 @@ function Report() {
       nickNames,
     })
   }
-  let filterResult = [...rawDataSource]
+  let filterResult = [...(rawDataSource || [])]
   let allComments: IViewData[] = []
   if(filterForm.dateRange && filterForm.dateRange.length > 0) {
     filterResult = filterResult.filter(item => {

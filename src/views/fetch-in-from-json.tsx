@@ -1,4 +1,4 @@
-import { useState, } from "react";
+import { useEffect, useState, } from "react";
 import { Avatar, Button, Drawer, Form, Space, Switch, Table } from 'antd'
 import useData, { UNKNOWN, } from '../hooks/use-data'
 import CommentList from '../components/CommentList'
@@ -6,9 +6,21 @@ import CommentList from '../components/CommentList'
 function FetchInFromJSON() {
   const [filterHasComment, setFilterHasComment] = useState(false)
   
+
+  const [rawDataSource, setRawDataSource] = useState<IViewData[]>()
   const { getDataSource, } = useData()
-  const rawDataSource = getDataSource()
-  let dataSource = [...rawDataSource].filter(d => {
+  useEffect(() => {
+    const initData = async () => {
+      try {
+        const data = await getDataSource()
+        setRawDataSource(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    initData()
+  }, [])
+  let dataSource = [...(rawDataSource || [])].filter(d => {
     if (filterHasComment) {
       return d.commentList.list.length > 0
     }
@@ -223,11 +235,11 @@ function FetchInFromJSON() {
   const onFilterChange = (filter: boolean) => {
     setFilterHasComment(filter)
   }
-  const [commentList] = [rawDataSource.map(r => r.commentList.list).flat()]
+  const [commentList] = [(rawDataSource || []).map(r => r.commentList.list).flat()]
   const showTotal = (total: number) => `共 ${total} 条`
   return (
     <>
-      共{rawDataSource.length}条记录，{commentList.length}条评论。
+      共{(rawDataSource || []).length}条记录，{commentList.length}条评论。
       <Form>
         <Form.Item label="只看有评论的" valuePropName="checked">
           <Switch onChange={onFilterChange} />
