@@ -21,7 +21,7 @@ function FetchInFromJSON(props: any) {
     }
     const initData = async () => {
       try {
-        const data = await getDataSource()
+        const data = await getDataSource(Number.parseInt(id as string, 10))
         setRawDataSource(data)
       } catch (error) {
         console.error(error)

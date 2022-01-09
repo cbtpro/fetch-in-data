@@ -14,13 +14,7 @@ function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/fetch-in-json">从JSON中获取数据</Link>
-            </li>
-            <li>
-              <Link to="/report">报表</Link>
+              <Link to="/">数据更新记录,每条记录取最新2000条</Link>
             </li>
           </ul>
         </nav>

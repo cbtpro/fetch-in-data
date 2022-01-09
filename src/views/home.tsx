@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { Table, } from 'antd'
+import { Space, Table, } from 'antd'
 import { useMemfireDB, } from '../utils'
 import moment from "moment"
+import { Link } from "react-router-dom"
 
 export default function Home() {
   const { queryL3List, } = useMemfireDB()
@@ -33,8 +34,20 @@ export default function Home() {
       dataIndex: 'updateTime',
       key: 'updateTime',
       render: (text: string, record: any, index: number) => {
-        const updateTime = moment(text).format('YYYY-MM-DD HH:mm:ss')
+        const updateTime = moment(text).local().format()
         return (<>{updateTime}</>)
+      },
+    },
+    {
+      title: '',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
+      render: (text: string, record: any, index: number) => {
+        const { id, } = record
+        return (<><Space>
+            <Link to={`/fetch-in-json?id=${id}`}>三好一改</Link>
+            <Link to={`/report?id=${id}`}>统计</Link>
+          </Space></>)
       },
     },
   ];

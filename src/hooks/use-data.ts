@@ -18,10 +18,10 @@ const getDataPromise = <T>() => {
 }
 const useData = () => {
   const { queryL3, } = useMemfireDB()
-  const getDataSource = async () => {
+  const getDataSource = async (id: number) => {
     const groupPromise = getGroupPromise()
     // const dataPromise = getDataPromise<IRawData>()
-    const queryL3Promise = queryL3()
+    const queryL3Promise = queryL3(id)
     const [groupData, l3Data] = await Promise.all([groupPromise, queryL3Promise])
     const [firstData] = (l3Data || []).reverse()
     const rawData = firstData.json

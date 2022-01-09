@@ -28,10 +28,11 @@ export function useMemfireDB() {
     return data as unknown as T
   }
 
-  const queryL3 = async () => {
+  const queryL3 = async (id: number) => {
     const { data, error } = await supabase
     .from(dbname)
     .select()
+    .match({ id, })
     return data
   }
 

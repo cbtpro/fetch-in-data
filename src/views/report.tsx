@@ -28,6 +28,8 @@ import { distinct, } from '../utils'
 import useData from '../hooks/use-data'
 import FilterForm from '../components/FilterForm'
 import Summary from '../components/Summary'
+import { useNavigate } from 'react-router-dom'
+import { useQuery } from '../hooks/user-query'
 
 // 通过 ComposeOption 来组合出一个只有必须组件和图表的 Option 类型
 // type ECOption = echarts.ComposeOption<
@@ -102,10 +104,17 @@ function Report() {
     nickNames: [],
   })
   const { getDataSource, } = useData()
+  let navigate = useNavigate();
+  const query = useQuery();
   useEffect(() => {
+    const { id, } = query
+    if (!id) {
+      navigate('/')
+      return
+    }
     const initData = async () => {
       try {
-        const data = await getDataSource()
+        const data = await getDataSource(Number.parseInt(id as string, 10))
         setRawDataSource(data)
       } catch (error) {
         console.error(error)
