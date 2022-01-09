@@ -23,7 +23,7 @@ const useData = () => {
     // const dataPromise = getDataPromise<IRawData>()
     const queryL3Promise = queryL3()
     const [groupData, l3Data] = await Promise.all([groupPromise, queryL3Promise])
-    const [firstData] = l3Data || []
+    const [firstData] = (l3Data || []).reverse()
     const rawData = firstData.json
     const groups = groupData as any[];
     const dataSource: IViewData[] = [...rawData.data].map((item) => {

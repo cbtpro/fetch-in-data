@@ -20,18 +20,27 @@ export function useMemfireDB() {
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImV4cCI6MzE3OTU3NzU3NCwiaWF0IjoxNjQxNjU3NTc0LCJpc3MiOiJzdXBhYmFzZSJ9.r1_uIQHx44i8ndTN8soswfnTf7JAF2YCXDLnxAsjD9k'
   const dbname = 'l3'
   const supabase = createClient(supabaseUrl, supabaseKey)
+  
+  const queryL3List = async <T>() => {
+    const { data, error } = await supabase
+    .from(dbname)
+    .select('id, inserted_at')
+    return data as unknown as T
+  }
+
   const queryL3 = async () => {
     const { data, error } = await supabase
     .from(dbname)
     .select()
     return data
   }
+
   const insertL3 = async (jsonText: string) => {
     const { data, error } = await supabase
       .from(dbname)
-      .update([
+      .insert([
         { json: JSON.parse(jsonText)}
-      ]).match({ id: 1, })
+      ])
   }
   const deleteL3 = async (id: number) => {
     const res = await supabase.from(dbname).delete().match({ id, })
@@ -39,6 +48,7 @@ export function useMemfireDB() {
   }
 
   return {
+    queryL3List,
     queryL3,
     insertL3,
     deleteL3,

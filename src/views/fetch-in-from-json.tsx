@@ -1,15 +1,24 @@
 import { useEffect, useState, } from "react";
+import { useNavigate, } from 'react-router-dom'
 import { Avatar, Button, Drawer, Form, Space, Switch, Table } from 'antd'
 import useData, { UNKNOWN, } from '../hooks/use-data'
 import CommentList from '../components/CommentList'
+import { useQuery } from "../hooks/user-query";
 
-function FetchInFromJSON() {
+function FetchInFromJSON(props: any) {
+  let navigate = useNavigate();
+  const query = useQuery();
   const [filterHasComment, setFilterHasComment] = useState(false)
   
 
   const [rawDataSource, setRawDataSource] = useState<IViewData[]>()
   const { getDataSource, } = useData()
   useEffect(() => {
+    const { id, } = query
+    if (!id) {
+      navigate('/')
+      return
+    }
     const initData = async () => {
       try {
         const data = await getDataSource()

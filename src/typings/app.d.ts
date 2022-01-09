@@ -94,6 +94,11 @@ interface ICommentList {
     login_user_id: string;
     tags: any[];
   }
+  interface IL3Data {
+    id: number;
+    json?: IRawData;
+    inserted_at: string;
+  }
   interface IRawData {
     code: number;
     msg: string;
