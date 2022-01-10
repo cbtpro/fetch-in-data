@@ -4,6 +4,7 @@ import Home from "./views/home";
 import FetchInFromJSON from "./views/fetch-in-from-json";
 import Report from "./views/report";
 import UpdateData from "./views/update-data";
+import UpdateDataV2 from './views/update-data-v2'
 
 import "./App.css";
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/fetch-in-json" element={<FetchInFromJSON />} />
         <Route path="/report" element={<Report />}></Route>
         <Route path="/update-data" element={<UpdateData />}></Route>
+        <Route path="/update-data-v2" element={<UpdateDataV2 />}></Route>
       </Routes>
     </HashRouter>
   );

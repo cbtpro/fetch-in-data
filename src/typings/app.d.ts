@@ -99,6 +99,14 @@ interface ICommentList {
     json?: IRawData;
     inserted_at: string;
   }
+  interface IL3DataV2 {
+    id?: number;
+    post_id: string;
+    post: IItem;
+    post_create_at: string;
+    create_at?: string;
+    update_at?: string;
+  }
   interface IRawData {
     code: number;
     msg: string;
