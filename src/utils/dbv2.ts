@@ -20,10 +20,24 @@ export function useMemfireDBV2() {
   const tableName = 'l3_v2'
   const supabase = createClient(supabaseUrl, supabaseKey)
 
-  const queryL3List = async (from = 0, to = 1000) => {
+  const queryL3List = async (params: {
+    from: number;
+    to: number;
+    startTime: string;
+    endTime: string;
+  }) => {
+    const {
+      from = 0,
+      to = 1000,
+      startTime,
+      endTime,
+    } = params
     const { data, error, } = await supabase
       .from(tableName)
       .select()
+      .order('post_create_at', { ascending: false })
+      .gte('post_create_at', startTime)
+      .lt('post_create_at', endTime)
       .range(from, to)
     if (error) {
       console.error(error)

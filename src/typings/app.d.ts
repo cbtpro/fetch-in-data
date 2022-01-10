@@ -151,3 +151,7 @@ interface ICommentList {
     commentCount: number;
     replyComout: number;
   }
+
+  interface ISearchForm {
+    dateRange: [Moment, Moment];
+  }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import { useState } from 'react';
-import { Upload, Button } from 'antd';
+import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { useMemfireDBV2, } from '../utils';
@@ -38,7 +38,9 @@ function UpdateDataV2 () {
           }
         })
         const res = await updateL3List(datas)
-        console.log(res)
+        message.info({
+          content: `更新${res.length}条数据!`,
+        })
       }
     } catch (error) {
       console.error(error)
