@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Table, } from 'antd'
 import moment from "moment"
 import { useEffect, useState } from "react"
 import { useMemfireDBV2 } from "../../utils"
@@ -38,8 +39,45 @@ function SearchResult (props: IProps) {
     }
     initData()
   }, [form])
+  const dataSource = result.map(item => {
+    const { post, } = item
+    return post
+  })
+  const columns = [
+    {
+      title: "昵称",
+      dataIndex: "nickName",
+      key: "nickName",
+    },
+    {
+      title: "姓名",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "三好一改",
+      dataIndex: "postCount",
+      key: "postCount",
+    },
+    {
+      title: "主动评论数",
+      dataIndex: "replyComout",
+      key: "replyComout",
+    },
+    {
+      title: "被动评论数",
+      dataIndex: "commentCount",
+      key: "commentCount",
+    },
+  ];
+  const showTotal = (total: number) => `共 ${total} 条`
   return <>
-    {JSON.stringify(result)}
+    <Table
+      dataSource={dataSource}
+      columns={columns}
+      rowKey='id' 
+      pagination={{ position: ['topRight', 'bottomRight'], showQuickJumper: true, showTotal, }}
+    />
   </>
 }
 
