@@ -10,12 +10,6 @@ const getGroupPromise = <T>() => {
       .then(res => resolve(res.default as unknown as T))
   })
 }
-const getDataPromise = <T>() => {
-  return new Promise<T>((resolve, reject) => {
-    import('../assets/data/default.json')
-      .then(res => resolve(res.default as unknown as T))
-  })
-}
 const useData = () => {
   const { queryL3, } = useMemfireDB()
   const getDataSource = async (id: number) => {

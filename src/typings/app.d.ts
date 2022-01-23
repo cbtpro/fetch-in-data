@@ -100,12 +100,11 @@ interface ICommentList {
     inserted_at: string;
   }
   interface IL3DataV2 {
-    id?: number;
     post_id: string;
     post: IItem;
     post_create_at: string;
-    create_at?: string;
-    update_at?: string;
+    updated_at?: string;
+    inserted_at?: string;
   }
   interface IRawData {
     code: number;
@@ -155,3 +154,41 @@ interface ICommentList {
   interface ISearchForm {
     dateRange: [Moment, Moment];
   }
+
+interface IQueryL3Param {
+  from: number;
+  to: number;
+  startTime: string;
+  endTime: string;
+}
+
+interface IGroupData {
+  company: string;
+  group: string;
+  id: string;
+  name: string;
+  nickname: string;
+  no: number,
+  remark: string;
+  userId: string;
+}
+interface ICompany {
+  id: number;
+  name: string;
+}
+interface IUserV2 {
+  user_id: string;
+  nick_name: string;
+  wx_avatar: string;
+  real_name: string;
+  group: string;
+  company: string;
+}
+
+interface IFilterFormV2 {
+  from: number;
+  to: number;
+  dateRange: [moment, moment];
+  groups: string[];
+  users: string[];
+}

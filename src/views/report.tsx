@@ -121,6 +121,7 @@ function Report() {
       }
     }
     initData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   useEffect(() => {
     const users = distinct(
@@ -143,6 +144,7 @@ function Report() {
       ...filterForm,
       users: [...users],
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawDataSource])
   const onSubmit = (form: IFilterForm) => {
     const { dateRange, groups, companys, nickNames, } = form
